@@ -207,5 +207,7 @@ Reference: §2.5 [p. 10](../reference/level-1/sutton-barto-chapter-2.pdf#page=10
 
 ## Current bite
 
-**Active:** L1.0a — `package.json` and Vitest  
-**Status:** not started
+**Active:** L1.0bG — MockRNG `uniform` (stub started)  
+**Learner:** kewei · `learn/kewei`  
+**Done:** 0  
+**Status:** in progress
