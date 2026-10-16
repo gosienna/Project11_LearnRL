@@ -10,9 +10,27 @@
 //   then advance the index by one
 //   (running past the end should yield undefined — that is the signal you over-drew)
 //
-// Leave int, normal, and categorical for later bites.
+// L1.0a — add two methods. Both must call this.uniform(); do not read this.seq yourself.
+//
+// int(n):
+//   take the next uniform draw
+//   multiply it by n
+//   return that product rounded down to an integer
+//
+// normal():
+//   return the next uniform draw unchanged
+//   (tests script z-scores directly, including negatives)
+//
+// Leave categorical for a later bite.
 
 export class MockRNG{
-    constructor(){}
-    uniform(){}
+    constructor(seq){
+        this.seq = seq
+        this.i = 0
+    }
+    uniform(){
+        let out = this.seq[this.i]
+        this.i+=1
+        return out
+    }
 }

@@ -23,7 +23,7 @@ Paths below are under `student/`.
 
 ## Prerequisites (before agent/env)
 
-- [ ] **L1.0** `test/helpers/mockRng.js` — constructor plus `uniform` returns
+- [x] **L1.0** `test/helpers/mockRng.js` — constructor plus `uniform` returns
       the next scripted number and then advances
 - [ ] **L1.0a** same file — `int(n)` and `normal()` both go through `uniform`
       (`categorical` waits until ε-greedy needs it)
@@ -74,7 +74,7 @@ The shell is one website for all five levels. L1 replaces only its own slot.
 
 ## Current bite
 
-**Active:** L1.0 — MockRNG constructor and `uniform`
+**Active:** L1.0a — `int` and `normal` on MockRNG
 **Learner:** kewei · `learn/kewei`
-**Done:** 0
-**Status:** not started
+**Done:** 1
+**Status:** in progress
