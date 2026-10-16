@@ -158,7 +158,9 @@ travels one path.
 - **Page layout.** L1 wants bars, L2 a grid, L4 a track editor. Share the
   *widgets* (`<Slider>`, `<LineChart>`, `<Histogram>`, `<EquationPanel>`); let
   each example compose its own page. A configurable universal layout would be
-  worse than five bespoke ones.
+  worse than five bespoke ones. The pages still sit inside one site shell
+  (section 2.10) — the shell is navigation and the test bench, not a shared
+  demo layout.
 - **Reward functions.** Keep inside each env. A shared reward abstraction sounds
   elegant and buys nothing.
 - **Human input handling.** Only L5 needs it. Don't push it into `core`.
@@ -166,7 +168,9 @@ travels one path.
 ### 2.8 Repository layout
 
 ```
+index.html
 src/
+  site/      App.jsx  levels.js  TestBench.jsx
   core/      rng.js  spaces.js  buffer.js  stats.js  schema.js
   nn/        mlp.js  heads.js  optim.js
   env/       bandit.js  gridworld.js  cartpole.js  racer.js  pursuit.js  vec.js
@@ -175,7 +179,21 @@ src/
   runner/    worker.js  protocol.js  telemetry.js
   ui/        Slider.jsx  LineChart.jsx  Histogram.jsx  EquationPanel.jsx
   pages/     L1.jsx  L2.jsx  L3.jsx  L4.jsx  L5.jsx
+test/
+  helpers/mockRng.js  fixtures/cartpole_trajectory.json
+  core/      rng.test.js  spaces.test.js  buffer.test.js  stats.test.js
+  env/       bandit.test.js  gridworld.test.js  cartpole.test.js
+             racer.test.js  pursuit.test.js
+  agent/     bandit.test.js  tabular.test.js  reinforce.test.js
+             ppo.test.js  sac.test.js
+  agent/lib/ returns.test.js  gae.test.js  losses.test.js  targets.test.js
+  slow/      l1.slow.test.js … l5.slow.test.js
 ```
+
+`src/site/levels.js` is the only registry. It lists all five levels from the
+first commit of the shell, each pointing at a page module and at the test
+files that belong to that level. A missing page module is a placeholder, not
+a missing route.
 
 ### 2.9 Cross-cutting requirements
 
@@ -188,6 +206,68 @@ src/
 - **Headless verification.** Every env has a test that runs a hand-coded
   controller and asserts a known return. Environment bugs masquerading as
   algorithm bugs is the single largest time sink in RL.
+- **Same tests, two runners.** `npm test` stays the fast command-line loop.
+  The site's test bench runs those same files in the browser so a green check
+  is visible next to the level that just appeared. One suite, not two copies.
+
+### 2.10 One site, filled in from Level 1 to Level 5
+
+There is one website. It is runnable as soon as the shell exists, and it
+grows in place as each level is finished. Later levels are not a second app
+and not a set of loose HTML files.
+
+**Routes**
+
+| Path | What it shows |
+|------|----------------|
+| `/` | The ladder: five slots, L1 through L5. A finished level is a live link. An unfinished level stays on the ladder with its concept name and "not built yet". |
+| `/l1` … `/l5` | That level's page (`pages/L1.jsx` … `pages/L5.jsx`). |
+| `/tests` | The test bench: suites grouped `core`, then L1 … L5. |
+
+The nav always lists all five levels. Clicking an unfinished level shows the
+placeholder (goal, new concept, next milestone). When `pages/LN.jsx` starts
+exporting a page, `levels.js` mounts it and the placeholder is gone. Nothing
+else on the site is rearranged.
+
+**How you run it**
+
+```
+npm run dev      Vite dev server — the site (ladder, level pages, test bench)
+npm test         Vitest in the terminal, fast suite, under ~2 s
+npm run test:slow
+npm run test:all
+```
+
+`npm run dev` is how you watch the project accumulate. Open `/` after each
+milestone and confirm the new level is actually on the ladder. Training still
+happens in the worker; the shell only routes and renders.
+
+**How you run tests without leaving the site**
+
+`/tests` imports the same `test/**/*.test.js` files the CLI runs (Vitest
+browser mode). Buttons:
+
+- **Run fast** — every suite except `test/slow/`. This is `npm test`.
+- **Run this level** — only the files registered for that level in `levels.js`.
+- **Run slow** — `test/slow/lN.slow.test.js`, opt-in, same timeouts as
+  `npm run test:slow`.
+
+Results render on the page: file, test name, pass or fail, and the assertion
+message. The ladder badges each level with the last fast-suite result for its
+files, so a finished L1 shows green on `/` before L2 exists. The CLI remains
+what CI runs; the bench is the same assertions, visible while the demos are
+on screen. Do not keep a second set of expected values in the page.
+
+**What "progressively" means**
+
+1. Shell only: `/` shows five named slots, all placeholders. `/tests` can
+   already run `test/core/` once those files exist.
+2. Level 1 lands: `/l1` is the bandit (worker, sliders, charts). Its tests
+   show under L1 on `/tests`. Slots 2–5 stay placeholders.
+3. Each later level replaces only its own slot and its own test group.
+   Shared `core/`, `runner/`, `ui/`, and the shell do not get a new copy.
+4. When L5 is in, `/` is the full ladder and `/tests` runs the whole suite,
+   fast or slow, in the browser or from the terminal.
 
 ---
 
@@ -222,10 +302,11 @@ average `1/N`. Policy selector: ε-greedy / UCB / greedy.
 
 **Milestones**
 1. Env + agent headless, asserted to converge to the best arm
-2. Worker + telemetry + charts (this is the real work — the algorithm is trivial)
-3. Param schema driving sliders and equation bindings
-4. Human mode
-5. Non-stationary mode
+2. Site shell: `npm run dev` opens `/` with five ladder slots; `/tests` runs the fast suite in the browser. Only L1's slot is about to become real.
+3. Worker + telemetry + charts on `/l1` (this is the real work — the algorithm is trivial)
+4. Param schema driving sliders and equation bindings
+5. Human mode
+6. Non-stationary mode
 
 **Acceptance:** with `ε=0.1`, `k=10`, `σ=1`, the agent reaches ≥80% optimal-arm
 selection within 1,000 pulls. In non-stationary mode, constant `α` visibly beats
@@ -520,19 +601,27 @@ Chess can be *demoed* with pretrained weights. It cannot be trained live.
 
 ## 5. Build Order
 
-1. **`core/` + `runner/` + param schema** — the foundation
+1. **`core/` + `runner/` + param schema + site shell** — the foundation.
+   `npm run dev` already serves one site: five ladder slots, `/tests` wired to
+   the Vitest files, every level still a placeholder.
 2. **Level 1 end-to-end**, including the worker and full telemetry path. L1 is
    trivial as an algorithm, which is exactly why it's the right vehicle for
    debugging the infrastructure. When the bandit runs in a worker with live
-   sliders and a bound equation panel, the seams are proven.
-3. **Level 2** — adds the grid renderer and step mode; no new infrastructure
+   sliders and a bound equation panel, and its tests pass both in the terminal
+   and on `/tests`, the seams are proven. L2–L5 remain placeholders on `/`.
+3. **Level 2** — adds the grid renderer and step mode; no new infrastructure.
+   `/l2` replaces that slot only.
 4. **`nn/` façade + Level 3** — first gradients; cross-verify the env against
    Python before anything else
 5. **Level 4** — vectorization, track editor, diagnostics. The largest single
    chunk.
-6. **Level 5** — human input, replay buffer, opponent model
+6. **Level 5** — human input, replay buffer, opponent model. The ladder on
+   `/` is full.
 
-After step 2, each remaining level is mostly one env file plus one agent file.
+After step 2, each remaining level is mostly one env file, one agent file,
+and one page mounted by `src/site/levels.js`. Confirm each addition on
+`npm run dev` (the new route works) and on `/tests` (that level's fast tests
+pass in the browser). `npm test` is the same check from the terminal.
 
 **Environment discipline:** write all five envs first, in one pass, each as a pure
 `{reset, step, params}` object with a seeded RNG. Test each with a random policy

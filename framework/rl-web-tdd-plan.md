@@ -1,11 +1,19 @@
 # TDD Implementation Plan — Interactive RL on the Web
 
-Companion to `rl-web-framework.md`. Every step below is **RED → GREEN → REFACTOR**:
-write the failing test with a hand-computed expected value, then write the
-minimum code to pass it.
+Companion to `rl-web-framework.md` (§2.10 for the site, §5 for build order).
+Every step below is **RED → GREEN → REFACTOR**: write the failing test with a
+hand-computed expected value, then write the minimum code to pass it.
 
-Stack assumed: Vitest (`npm i -D vitest`), ESM, `npm test -- --watch` running
-continuously.
+Stack: Vite + Vitest, ESM. One suite, two ways to run it.
+
+- `npm test` (and `npm test -- --watch`) is the fast terminal loop.
+- `npm run dev` serves the single site. `/` is the five-level ladder, `/l1`…
+  `/l5` are the demos, `/tests` runs these same files in the browser.
+- A level shows up on the ladder when its page exists. Its tests show up on
+  `/tests` when `src/site/levels.js` lists those files. Do not keep a second
+  copy of the expected values in the page.
+
+Reading for each level lives under `reference/level-N/`, not in this file.
 
 ---
 
@@ -109,6 +117,17 @@ which you want and encode it in the test name.
 ---
 
 ## 2. Level 1 — k-armed Bandit
+
+Reading: `reference/level-1/README.md` (Sutton & Barto ch. 2 extract, Weng,
+Silver lecture 9). Thompson sampling and gradient bandits are out of scope;
+the tests below are ε-greedy, UCB, constant α, sample average, and
+non-stationary drift.
+
+Headless tests 1.1–1.13 come before the page. When they are green, the same
+files are what `/tests` runs for L1, and `/l1` is the bandit demo on the
+ladder (worker, sliders, charts). Slots L2–L5 stay placeholders. The slow
+check (1.13) is opt-in on both `npm run test:slow` and the bench's **Run slow**
+button.
 
 ### RED sequence
 
@@ -492,8 +511,13 @@ and assert it.
 
 ## 7. Running the Suite
 
+The site and the terminal execute one Vitest suite. CI uses the terminal.
+While you build, `npm run dev` is how you see the ladder fill in and how you
+re-run a level without leaving the page.
+
 ```
 package.json
+  "dev":        "vite"
   "test":       "vitest --exclude '**/*.slow.test.js'"
   "test:slow":  "vitest --include '**/*.slow.test.js' --testTimeout=120000"
   "test:all":   "npm run test && npm run test:slow"
@@ -501,21 +525,27 @@ package.json
 
 Keep `npm test` under **2 seconds**. That's the budget that keeps the red-green
 loop tight enough to actually practice TDD rather than merely intend to. Tier 2
-runs pre-commit and in CI.
+runs pre-commit, in CI, and only when you press **Run slow** on `/tests`.
 
-### Suggested file layout
+### On the site (`npm run dev`)
 
-```
-test/
-  helpers/mockRng.js  fixtures/cartpole_trajectory.json
-  core/     rng.test.js  spaces.test.js  buffer.test.js  stats.test.js
-  env/      bandit.test.js  gridworld.test.js  cartpole.test.js
-            racer.test.js  pursuit.test.js
-  agent/    bandit.test.js  tabular.test.js  reinforce.test.js
-            ppo.test.js  sac.test.js
-  agent/lib/ returns.test.js  gae.test.js  losses.test.js  targets.test.js
-  slow/     l1.slow.test.js … l5.slow.test.js
-```
+| Path | Role |
+|------|------|
+| `/` | Five slots. A finished level links to its demo and shows the last fast-suite result for its files. An unfinished level stays "not built yet". |
+| `/l1` … `/l5` | That level's page, mounted from `src/site/levels.js`. |
+| `/tests` | **Run fast** (same as `npm test`), **Run this level** (files registered for that level), **Run slow** (that level's `test/slow/` file). |
+
+Results on `/tests` are file, test name, pass or fail, and the assertion
+message. `levels.js` is the only list of which test files belong to which
+level; the bench does not hard-code a second list.
+
+### File layout
+
+Same tree as `rl-web-framework.md` §2.8: `test/` mirrors `src/` (`core/`,
+`env/`, `agent/`, `agent/lib/`), plus `test/helpers/mockRng.js`,
+`test/fixtures/`, and `test/slow/l1.slow.test.js` … `l5.slow.test.js`.
+The shell is `index.html` and `src/site/` (`App.jsx`, `levels.js`,
+`TestBench.jsx`). Pages are `src/pages/L1.jsx` … `L5.jsx`.
 
 ---
 
