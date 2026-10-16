@@ -19,11 +19,15 @@ Tests and the demo follow `framework/rl-web-tdd-plan.md` §2 and
 `framework/rl-web-framework.md` Level 1 plus §2.10. One site: `/` is the
 ladder, `/l1` is this demo, `/tests` runs the same files as `npm test`.
 
+Paths below are under `student/`.
+
 ## Prerequisites (before agent/env)
 
-- [ ] **L1.0** `test/helpers/mockRng.js` — scripted `uniform` / `int` / `normal`
+- [ ] **L1.0** `test/helpers/mockRng.js` — constructor plus `uniform` returns
+      the next scripted number and then advances
+- [ ] **L1.0a** same file — `int(n)` and `normal()` both go through `uniform`
       (`categorical` waits until ε-greedy needs it)
-- [ ] **L1.0b** `src/core/rng.js` — seeded PRNG (same seed → same sequence)
+- [ ] **L1.0b** `core/rng.js` — seeded PRNG (same seed → same sequence)
       *[TDD 0.1]*
 - [ ] **L1.0c** Vitest project (`package.json` scripts `dev`, `test`,
       `test:slow`, `test:all`) — `npm test` is the fast loop; `/tests` will
@@ -56,10 +60,10 @@ Hand-computed fixtures from the TDD plan. Observe with `npm test`.
 
 The shell is one website for all five levels. L1 replaces only its own slot.
 
-- [ ] **L1.14** `src/site/` + `npm run dev` — `/` shows five ladder slots.
+- [ ] **L1.14** `site/` + `npm run dev` — `/` shows five ladder slots.
       L2–L5 say "not built yet". Observe: open `/`.
 - [ ] **L1.15** `/tests` runs the L1 fast files (registered in
-      `src/site/levels.js`). Observe: **Run this level** matches `npm test`
+      `site/levels.js`). Observe: **Run this level** matches `npm test`
       for those files. No second set of expected values.
 - [ ] **L1.16** Worker + telemetry — training on `/l1`, main thread only renders
 - [ ] **L1.17** Param schema drives sliders and the on-screen update equation
@@ -70,5 +74,7 @@ The shell is one website for all five levels. L1 replaces only its own slot.
 
 ## Current bite
 
-**Active:** L1.0 — MockRNG  
+**Active:** L1.0 — MockRNG constructor and `uniform`
+**Learner:** kewei · `learn/kewei`
+**Done:** 0
 **Status:** not started
