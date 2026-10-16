@@ -49,7 +49,7 @@ generator can replace it later without touching any caller.
       Observe: `npm test` runs and reports no test files, rather than "command not found".
 - [ ] **L1.0bR** `test/helpers/mockRng.test.js` — MockRNG replays `[0.1, 0.7]`,
       `int(4)` on 0.7 is 2, an over-draw is `undefined`. Observe: red (module missing).
-- [ ] **L1.0bG** `test/helpers/mockRng.js` — `uniform` / `int` / `normal`
+- [x] **L1.0bG** `test/helpers/mockRng.js` — `uniform` / `int` / `normal`
       (`categorical` waits for L3). Observe: green.
 - [ ] **L1.0cR** `test/core/rng.test.js` — same seed → identical 1000 draws;
       different seed → differs *[TDD 0.1]*. Observe: red.
@@ -207,7 +207,7 @@ Reference: §2.5 [p. 10](../reference/level-1/sutton-barto-chapter-2.pdf#page=10
 
 ## Current bite
 
-**Active:** L1.0bG — MockRNG `int` and `normal` (`uniform` done)  
+**Active:** L1.0cG — `core/rng.js` `uniform` (xorshift32)  
 **Learner:** kewei · `learn/kewei`  
-**Done:** 0  
+**Done:** 1  
 **Status:** in progress
