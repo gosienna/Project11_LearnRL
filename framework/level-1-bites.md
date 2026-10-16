@@ -207,7 +207,7 @@ Reference: §2.5 [p. 10](../reference/level-1/sutton-barto-chapter-2.pdf#page=10
 
 ## Current bite
 
-**Active:** L1.0bG — MockRNG `uniform` (stub started)  
+**Active:** L1.0bG — MockRNG `int` and `normal` (`uniform` done)  
 **Learner:** kewei · `learn/kewei`  
 **Done:** 0  
 **Status:** in progress
