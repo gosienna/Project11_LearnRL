@@ -33,4 +33,10 @@ export class MockRNG{
         this.i+=1
         return out
     }
+    int(n){
+        return Math.floor(this.uniform()*n)
+    }
+    normal(){
+        return this.uniform()
+    }
 }

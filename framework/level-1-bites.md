@@ -25,10 +25,10 @@ Paths below are under `student/`.
 
 - [x] **L1.0** `test/helpers/mockRng.js` — constructor plus `uniform` returns
       the next scripted number and then advances
-- [ ] **L1.0a** same file — `int(n)` and `normal()` both go through `uniform`
+- [x] **L1.0a** same file — `int(n)` and `normal()` both go through `uniform`
       (`categorical` waits until ε-greedy needs it)
-- [ ] **L1.0b** `core/rng.js` — seeded PRNG (same seed → same sequence)
-      *[TDD 0.1]*
+- [ ] **L1.0b** `core/rng.js` — constructor plus `uniform` (xorshift32).
+      Same seed replays the same draws; a different seed differs. *[TDD 0.1]*
 - [ ] **L1.0c** Vitest project (`package.json` scripts `dev`, `test`,
       `test:slow`, `test:all`) — `npm test` is the fast loop; `/tests` will
       run these same files once the shell exists
@@ -74,7 +74,7 @@ The shell is one website for all five levels. L1 replaces only its own slot.
 
 ## Current bite
 
-**Active:** L1.0a — `int` and `normal` on MockRNG
+**Active:** L1.0b — seeded `RNG.uniform`
 **Learner:** kewei · `learn/kewei`
-**Done:** 1
+**Done:** 2
 **Status:** in progress
