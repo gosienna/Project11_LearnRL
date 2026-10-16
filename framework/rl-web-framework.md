@@ -61,7 +61,7 @@ Adding a knob becomes a one-line change instead of four edits in four files.
 
 | File | Contents | Why shared |
 |------|----------|------------|
-| `rng.js` | Seeded PRNG (xorshift128+ / PCG32): `uniform()`, `normal()`, `categorical(p)` | Deterministic replay. **Never call `Math.random()` anywhere in the codebase.** |
+| `rng.js` | Seeded PRNG (xorshift128+ / PCG32): `uniform()`, `normal()`, `categorical(p)` | Deterministic replay. **Never call `Math.random()` anywhere under `student/`.** |
 | `spaces.js` | `Discrete(n)`, `Box(low, high, shape)` with `sample(rng)`, `contains(x)` | Lets one agent bind to multiple envs (~40 lines) |
 | `buffer.js` | Ring buffer over flat `Float32Array`s, exposing both `drain()` and `sample(n, rng)` | Trajectory buffer for L3–L4, replay buffer for L5 — same storage, two access patterns |
 | `stats.js` | Welford running mean/std | Observation and advantage normalization; needed from L3 up |
@@ -167,9 +167,15 @@ travels one path.
 
 ### 2.8 Repository layout
 
+Every file the student writes lives in **`student/`**. Nothing they implement
+is created at the repo root or split across a second code tree. `framework/`
+and `reference/` stay outside that folder: they are the plan and the reading,
+not the implementation. `package.json` stays at the repo root only as the
+`npm` entry; its scripts run Vite and Vitest against `student/`.
+
 ```
-index.html
-src/
+student/
+  index.html
   site/      App.jsx  levels.js  TestBench.jsx
   core/      rng.js  spaces.js  buffer.js  stats.js  schema.js
   nn/        mlp.js  heads.js  optim.js
@@ -179,21 +185,24 @@ src/
   runner/    worker.js  protocol.js  telemetry.js
   ui/        Slider.jsx  LineChart.jsx  Histogram.jsx  EquationPanel.jsx
   pages/     L1.jsx  L2.jsx  L3.jsx  L4.jsx  L5.jsx
-test/
-  helpers/mockRng.js  fixtures/cartpole_trajectory.json
-  core/      rng.test.js  spaces.test.js  buffer.test.js  stats.test.js
-  env/       bandit.test.js  gridworld.test.js  cartpole.test.js
-             racer.test.js  pursuit.test.js
-  agent/     bandit.test.js  tabular.test.js  reinforce.test.js
-             ppo.test.js  sac.test.js
-  agent/lib/ returns.test.js  gae.test.js  losses.test.js  targets.test.js
-  slow/      l1.slow.test.js … l5.slow.test.js
+  test/
+    helpers/mockRng.js  fixtures/cartpole_trajectory.json
+    core/      rng.test.js  spaces.test.js  buffer.test.js  stats.test.js
+    env/       bandit.test.js  gridworld.test.js  cartpole.test.js
+               racer.test.js  pursuit.test.js
+    agent/     bandit.test.js  tabular.test.js  reinforce.test.js
+               ppo.test.js  sac.test.js
+    agent/lib/ returns.test.js  gae.test.js  losses.test.js  targets.test.js
+    slow/      l1.slow.test.js … l5.slow.test.js
+framework/    plan and bite checklists
+reference/    reading lists
 ```
 
-`src/site/levels.js` is the only registry. It lists all five levels from the
-first commit of the shell, each pointing at a page module and at the test
-files that belong to that level. A missing page module is a placeholder, not
-a missing route.
+Paths in the rest of this document (`core/rng.js`, `pages/L1.jsx`,
+`test/slow/`) are relative to `student/`. `student/site/levels.js` is the
+only registry. It lists all five levels from the first commit of the shell,
+each pointing at a page module and at the test files that belong to that
+level. A missing page module is a placeholder, not a missing route.
 
 ### 2.9 Cross-cutting requirements
 
@@ -221,7 +230,7 @@ and not a set of loose HTML files.
 | Path | What it shows |
 |------|----------------|
 | `/` | The ladder: five slots, L1 through L5. A finished level is a live link. An unfinished level stays on the ladder with its concept name and "not built yet". |
-| `/l1` … `/l5` | That level's page (`pages/L1.jsx` … `pages/L5.jsx`). |
+| `/l1` … `/l5` | That level's page (`student/pages/L1.jsx` … `L5.jsx`). |
 | `/tests` | The test bench: suites grouped `core`, then L1 … L5. |
 
 The nav always lists all five levels. Clicking an unfinished level shows the
@@ -244,12 +253,12 @@ happens in the worker; the shell only routes and renders.
 
 **How you run tests without leaving the site**
 
-`/tests` imports the same `test/**/*.test.js` files the CLI runs (Vitest
-browser mode). Buttons:
+`/tests` imports the same `student/test/**/*.test.js` files the CLI runs
+(Vitest browser mode). Buttons:
 
-- **Run fast** — every suite except `test/slow/`. This is `npm test`.
-- **Run this level** — only the files registered for that level in `levels.js`.
-- **Run slow** — `test/slow/lN.slow.test.js`, opt-in, same timeouts as
+- **Run fast** — every suite except `student/test/slow/`. This is `npm test`.
+- **Run this level** — only the files registered for that level in `student/site/levels.js`.
+- **Run slow** — `student/test/slow/lN.slow.test.js`, opt-in, same timeouts as
   `npm run test:slow`.
 
 Results render on the page: file, test name, pass or fail, and the assertion
@@ -261,7 +270,7 @@ on screen. Do not keep a second set of expected values in the page.
 **What "progressively" means**
 
 1. Shell only: `/` shows five named slots, all placeholders. `/tests` can
-   already run `test/core/` once those files exist.
+   already run `student/test/core/` once those files exist.
 2. Level 1 lands: `/l1` is the bandit (worker, sliders, charts). Its tests
    show under L1 on `/tests`. Slots 2–5 stay placeholders.
 3. Each later level replaces only its own slot and its own test group.
@@ -619,7 +628,7 @@ Chess can be *demoed* with pretrained weights. It cannot be trained live.
    `/` is full.
 
 After step 2, each remaining level is mostly one env file, one agent file,
-and one page mounted by `src/site/levels.js`. Confirm each addition on
+and one page mounted by `student/site/levels.js`. Confirm each addition on
 `npm run dev` (the new route works) and on `/tests` (that level's fast tests
 pass in the browser). `npm test` is the same check from the terminal.
 
