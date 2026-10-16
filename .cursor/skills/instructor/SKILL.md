@@ -29,8 +29,9 @@ implemented source.
    - `framework/` (`.md` / `.pdf`) — project framework, bite checklist, and progress
    - `reference/` (`.md` / `.pdf`) — related learning material
    - Instructional **comments** in the single file the user is about to edit
-   - Git: create or check out the learner branch described below. Do not commit,
-     push, change git config, or discard uncommitted work.
+   - Git: create or check out the learner branch described below. After each
+     finished bite, commit on that branch only. Do not push, change git config,
+     or discard uncommitted work.
 4. **Bite-size implementation:**
    - One modification must have a corresponding change the user can **observe**
      (e.g. a new draw-line function → a line appears on a web canvas; a fontsize
@@ -43,7 +44,7 @@ implemented source.
 5. After issuing a step, **wait** for the user to confirm they implemented and
    observed the effect before the next bite.
 
-## Begin learning
+## How to track learning
 
 Run this before the first bite of a session, and again whenever the user says
 they want to begin, start, or resume learning.
@@ -69,8 +70,21 @@ they want to begin, start, or resume learning.
    record: `[x]` means they implemented the bite and observed the effect.
    On resume, report their name, branch, how many bites are done, and which
    bite is active before giving the next step.
-5. Do not commit or push. Updating the checklist is the progress record. Commit
-   only when they explicitly ask.
+5. **When the learner finishes a bite**, commit that change on their
+   `learn/<slug>` branch. Do this only after they confirm they implemented the
+   bite and observed the effect. Do not commit mid-bite, and do not push.
+   - Confirm `git branch --show-current` is `learn/<slug>`. If it is not, stop.
+     Check that branch out only when the working tree is clean.
+   - Mark the bite `[x]` in the framework checklist and update the current-bite
+     note, in the same commit as their implementation.
+   - Stage only the files for this bite (the script they wrote and the checklist
+     update). Leave unrelated dirty files unstaged.
+   - Commit on `learn/<slug>` with one line that says why the bite is done, for
+     example `Complete bite: draw a line on the canvas`. Pass the message with
+     a HEREDOC. Do not change git config, amend, skip hooks, or create an empty
+     commit.
+   - After the commit, `git status` should show that branch with this bite’s
+     files clean. Then issue the next bite.
 
 ## Startup
 
@@ -105,8 +119,9 @@ hook. Do not fill in the implementation body.
 - When the user struggles or a step is too large, **split** it in the framework
   doc and re-issue a smaller bite.
 - When the user finishes a step, mark progress on their `learn/<slug>` branch
-  in the framework checklist (`[x]`, and update the “Current bite” note) before
-  issuing the next one.
+  in the framework checklist (`[x]`, and update the “Current bite” note), commit
+  that bite on `learn/<slug>` as in **How to track learning**, then issue the
+  next one.
 - Framework docs may be modified based on the user’s interaction (scope shifts,
   skipped levels, new observables).
 
@@ -128,8 +143,9 @@ hook. Do not fill in the implementation body.
 - Pasting runnable code (complete functions, imports, or copy-paste snippets) in chat or in comments
 - Skipping framework updates after a completed or revised step
 - Teaching before the learner has a name and a `learn/<slug>` branch
-- Creating a branch while the working tree is dirty, or committing progress
-  without being asked
+- Creating a branch while the working tree is dirty
+- Committing before the learner confirms the bite is done, or committing on any
+  branch other than `learn/<slug>`
 
 ## Examples
 
