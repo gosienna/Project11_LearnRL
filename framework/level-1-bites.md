@@ -27,11 +27,12 @@ Paths below are under `student/`.
       the next scripted number and then advances
 - [x] **L1.0a** same file — `int(n)` and `normal()` both go through `uniform`
       (`categorical` waits until ε-greedy needs it)
-- [ ] **L1.0b** `core/rng.js` — constructor plus `uniform` (xorshift32).
+- [x] **L1.0b** `core/rng.js` — constructor plus `uniform` (xorshift32).
       Same seed replays the same draws; a different seed differs. *[TDD 0.1]*
-- [ ] **L1.0c** Vitest project (`package.json` scripts `dev`, `test`,
-      `test:slow`, `test:all`) — `npm test` is the fast loop; `/tests` will
-      run these same files once the shell exists
+- [ ] **L1.0c** repo-root `package.json` — `"type": "module"` and a `test`
+      script that runs Vitest once. Observe: `npm test` starts Vitest.
+- [ ] **L1.0d** same file — scripts `dev`, `test:slow`, and `test:all`.
+      `npm test` stays the fast loop and skips `student/test/slow/`.
 
 ## Agent (headless)
 
@@ -74,7 +75,7 @@ The shell is one website for all five levels. L1 replaces only its own slot.
 
 ## Current bite
 
-**Active:** L1.0b — seeded `RNG.uniform`
+**Active:** L1.0c — `package.json` script `test`
 **Learner:** kewei · `learn/kewei`
-**Done:** 2
+**Done:** 3
 **Status:** in progress
