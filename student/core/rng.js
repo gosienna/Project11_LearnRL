@@ -16,3 +16,21 @@
 //   (that quotient is in [0, 1))
 //
 // Leave int, normal, and categorical for later bites.
+export class RNG{
+    constructor(seed){
+        let state = seed | 0
+        if (state == 0){
+            throw("seed can't be 0!")
+        }else{
+        this.state = seed | 0 // use seed as the starting point for random number generation
+        }
+    }
+    uniform(){
+        let x = this.state
+        x = x ^(x << 13)
+        x = x ^(x >>>17)
+        x = x ^(x << 5)
+        this.state = x
+        return (x>>>0)/2**32 // use x>>>0 to turn negative number to positive, equal to add 2^32
+    }
+}

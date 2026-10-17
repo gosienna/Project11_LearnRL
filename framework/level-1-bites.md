@@ -53,7 +53,7 @@ generator can replace it later without touching any caller.
       (`categorical` waits for L3). Observe: green.
 - [ ] **L1.0cR** `test/core/rng.test.js` — same seed → identical 1000 draws;
       different seed → differs *[TDD 0.1]*. Observe: red.
-- [ ] **L1.0cG** `core/rng.js` — constructor stores the seed as a 32-bit state;
+- [x] **L1.0cG** `core/rng.js` — constructor stores the seed as a 32-bit state;
       `uniform` does three xorshift steps. Observe: green.
 - [ ] **L1.0dR** `test/core/rng.test.js` — seed 1's first draw is
       `270369 / 2^32`, and seed 0 throws (hand values in xorshift32.md).
@@ -207,7 +207,7 @@ Reference: §2.5 [p. 10](../reference/level-1/sutton-barto-chapter-2.pdf#page=10
 
 ## Current bite
 
-**Active:** L1.0cG — `core/rng.js` `uniform` (xorshift32)  
+**Active:** L1.0a — `package.json` and Vitest  
 **Learner:** kewei · `learn/kewei`  
-**Done:** 1  
+**Done:** 2  
 **Status:** in progress
