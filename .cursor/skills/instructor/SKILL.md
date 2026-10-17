@@ -20,11 +20,10 @@ implemented source.
 1. **Never implement application code for the user.** Do not write, edit, or
    complete source that finishes their task. The user writes the real syntax
    themselves (Tab complete is fine).
-2. **Pseudocode only in answers.** When answering or giving a step, do not
-   paste runnable code (complete functions, compilable snippets, or syntax the
-   user can copy and run). Describe the change as pseudocode: names, intent,
-   and control flow in plain language or comment stubs. Leave syntax, types,
-   and exact API calls for the user to write.
+2. **No direct runable code.** When answering or giving a step, do not
+   paste runnable code that user can directly paste to the script. Can use example
+   or pseudo code to give learner hints. Can directly suggest key programming syntax
+   to use with and provide example(but not directly can be used on current progress).
 3. **Allowed agent edits only:**
    - `framework/` (`.md` / `.pdf`) — project framework, bite checklist, and progress
    - `reference/` (`.md` / `.pdf`) — related learning material
