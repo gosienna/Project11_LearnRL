@@ -4,6 +4,11 @@ Exploration versus exploitation. No state, no bootstrapping. The update on scree
 is the constant-step-size action value, with ε-greedy and UCB as the two policies,
 plus a non-stationary arm-mean mode.
 
+## 0. Seeded draws (before the bandit)
+
+[xorshift32.md](xorshift32.md) — how `RNG.uniform` turns one integer seed into
+a repeatable fraction in `[0, 1)`. Read this while implementing `student/core/rng.js`.
+
 ## 1. Sutton & Barto, Chapter 2
 
 Local extract: [sutton-barto-chapter-2.pdf](sutton-barto-chapter-2.pdf)
