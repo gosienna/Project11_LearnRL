@@ -384,7 +384,7 @@ $$\nabla_\theta J = \mathbb{E}\Big[\sum_t \nabla_\theta \log \pi_\theta(a_t|s_t)
 \qquad G_t = \sum_{k \ge t} \gamma^{k-t} r_k$$
 
 **Environment** (~60 LOC). **Port the Gym source line for line; do not derive
-it.** Semi-implicit Euler, four state variables, termination at `|x| > 2.4` or
+it.** Explicit Euler (Gym's default `kinematics_integrator = "euler"`; the TDD golden fixture depends on it), four state variables, termination at `|x| > 2.4` or
 `|θ| > 12°`.
 
 $$\ddot\theta = \frac{g\sin\theta - \cos\theta\left[\frac{F + m_p\ell\dot\theta^2\sin\theta}{m_c+m_p}\right]}{\ell\left[\frac{4}{3} - \frac{m_p\cos^2\theta}{m_c+m_p}\right]},

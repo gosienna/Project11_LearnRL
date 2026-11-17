@@ -10,7 +10,7 @@ Stack: Vite + Vitest, ESM. One suite, two ways to run it.
 - `npm run dev` serves the single site. `/` is the five-level ladder, `/l1`…
   `/l5` are the demos, `/tests` runs these same files in the browser.
 - A level shows up on the ladder when its page exists. Its tests show up on
-  `/tests` when `src/site/levels.js` lists those files. Do not keep a second
+  `/tests` when `student/site/levels.js` lists those files. Do not keep a second
   copy of the expected values in the page.
 
 Reading for each level lives under `reference/level-N/`, not in this file.
@@ -52,7 +52,7 @@ export class MockRNG {
 
 Now an ε-greedy agent is a pure function of `(state, scripted draws)` and you can
 assert exact action indices. Every `env`, `agent`, and `buffer` in the codebase
-takes `rng` as a constructor argument. **`Math.random()` never appears in `src/`**
+takes `rng` as a constructor argument. **`Math.random()` never appears in `student/`**
 — add a lint rule for it on day one.
 
 ### Three tiers of test
@@ -532,7 +532,7 @@ runs pre-commit, in CI, and only when you press **Run slow** on `/tests`.
 | Path | Role |
 |------|------|
 | `/` | Five slots. A finished level links to its demo and shows the last fast-suite result for its files. An unfinished level stays "not built yet". |
-| `/l1` … `/l5` | That level's page, mounted from `src/site/levels.js`. |
+| `/l1` … `/l5` | That level's page, mounted from `student/site/levels.js`. |
 | `/tests` | **Run fast** (same as `npm test`), **Run this level** (files registered for that level), **Run slow** (that level's `test/slow/` file). |
 
 Results on `/tests` are file, test name, pass or fail, and the assertion
@@ -541,11 +541,11 @@ level; the bench does not hard-code a second list.
 
 ### File layout
 
-Same tree as `rl-web-framework.md` §2.8: `test/` mirrors `src/` (`core/`,
+Same tree as `rl-web-framework.md` §2.8: `student/test/` mirrors `student/` (`core/`,
 `env/`, `agent/`, `agent/lib/`), plus `test/helpers/mockRng.js`,
 `test/fixtures/`, and `test/slow/l1.slow.test.js` … `l5.slow.test.js`.
-The shell is `index.html` and `src/site/` (`App.jsx`, `levels.js`,
-`TestBench.jsx`). Pages are `src/pages/L1.jsx` … `L5.jsx`.
+The shell is `index.html` and `student/site/` (`App.jsx`, `levels.js`,
+`TestBench.jsx`). Pages are `student/pages/L1.jsx` … `L5.jsx`.
 
 ---
 

@@ -35,3 +35,11 @@ https://arxiv.org/abs/1506.02438
 — read Spinning Up’s advantage section first, and open that paper if the `λ`
 trace is still unclear. The Gaussian policy head here is also the one level 4
 uses for steer and throttle.
+
+## Book bridge (from the Level 3 extract)
+
+Sutton & Barto §13.5 Actor–Critic Methods
+([p. 11](../level-3/sutton-barto-chapter-13.pdf#page=11)) and §13.7 Policy
+Parameterization for Continuous Actions
+([p. 15](../level-3/sutton-barto-chapter-13.pdf#page=15)). Read these before
+the papers if the critic or the Gaussian head is new.

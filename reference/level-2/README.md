@@ -5,17 +5,30 @@ comparison is Q-learning’s cliff-edge path versus SARSA’s safer detour.
 
 ## 1. Sutton & Barto, Chapters 3 and 6
 
-Full book in `reference/`:
-`Reinforcement Learning An Introduction (Adaptive Computation and Machine Learning series).pdf`
+Local extracts (the full book in `reference/` is not tracked by git):
 
-- Chapter 3, §§3.1–3.6 (pp. 47–67): agent–environment interface, return, policy,
-  and `q(s,a)`. This is where “state” and “transition” enter.
-- Chapter 6, §§6.1 and 6.4–6.6 (from p. 119): TD error, SARSA, Q-learning,
-  Expected SARSA.
-- Example 6.6, Cliff Walking (about pp. 132–133): the grid this level’s
-  acceptance test copies. Reward −1 per step, −100 on the cliff, ε-greedy.
-  Q-learning learns the optimal edge path and still falls while exploring;
-  SARSA learns the long safe path.
+- [sutton-barto-chapter-3.pdf](sutton-barto-chapter-3.pdf): book PDF pages 69–94
+  (printed pp. 47–72). Extract page = book PDF page − 68.
+- [sutton-barto-chapter-6.pdf](sutton-barto-chapter-6.pdf): book PDF pages 141–162
+  (printed pp. 119–140). Extract page = book PDF page − 140.
+
+Read:
+
+- Chapter 3, §§3.1–3.5: agent–environment interface
+  ([p. 1](sutton-barto-chapter-3.pdf#page=1)), returns and episodes
+  ([p. 8](sutton-barto-chapter-3.pdf#page=8)), policies and `q(s,a)`
+  ([p. 12](sutton-barto-chapter-3.pdf#page=12)). This is where “state” and
+  “transition” enter.
+- Chapter 6: TD prediction §6.1 ([p. 1](sutton-barto-chapter-6.pdf#page=1)),
+  SARSA §6.4 ([p. 11](sutton-barto-chapter-6.pdf#page=11)), Q-learning §6.5
+  ([p. 13](sutton-barto-chapter-6.pdf#page=13)), Expected SARSA §6.6
+  ([p. 15](sutton-barto-chapter-6.pdf#page=15)).
+- Example 6.6, Cliff Walking ([p. 14](sutton-barto-chapter-6.pdf#page=14)): the
+  grid this level’s acceptance test copies. Reward −1 per step, −100 on the
+  cliff (and back to start), ε-greedy. Q-learning learns the optimal edge path
+  and still falls while exploring; SARSA learns the long safe path.
+- Level 5 later uses §6.7, Maximization Bias and Double Learning
+  ([p. 16](sutton-barto-chapter-6.pdf#page=16)), as the root of the twin-Q `min`.
 
 ## 2. Lilian Weng, *A (Long) Peek into Reinforcement Learning*
 

@@ -4,13 +4,21 @@ A table no longer fits: the state is continuous, so a small network represents
 the policy. The update is the policy gradient with a reward-to-go and an
 optional baseline. Stop before actor-critic; that is level 4.
 
-The pole to port is Gymnasium CartPole-v1 (semi-implicit Euler, `|x| > 2.4` or
+The pole to port is Gymnasium CartPole-v1 (explicit Euler, Gym's default integrator, `|x| > 2.4` or
 `|θ| > 12°`):
 https://gymnasium.farama.org/environments/classic_control/cart_pole/
 
 ## 1. Sutton & Barto, Chapter 13, §§13.1–13.4
 
-Full book in `reference/`, pp. 321–330.
+Local extract: [sutton-barto-chapter-13.pdf](sutton-barto-chapter-13.pdf),
+book PDF pages 343–362 (printed pp. 321–340). Extract page = book PDF page − 342.
+
+§13.1 [p. 2](sutton-barto-chapter-13.pdf#page=2) · §13.2
+[p. 4](sutton-barto-chapter-13.pdf#page=4) · §13.3
+[p. 6](sutton-barto-chapter-13.pdf#page=6) · §13.4
+[p. 9](sutton-barto-chapter-13.pdf#page=9). Level 4 reuses §13.5
+[p. 11](sutton-barto-chapter-13.pdf#page=11) and §13.7
+[p. 15](sutton-barto-chapter-13.pdf#page=15) from this same file.
 
 Policy approximation, the policy gradient theorem, REINFORCE, and REINFORCE
 with a state-dependent baseline. The baseline is what the variance panel is

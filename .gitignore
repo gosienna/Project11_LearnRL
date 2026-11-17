@@ -1,2 +1,5 @@
 node_modules/
+.venv/
+.pixi/
+scratchpad/
 reference/Reinforcement Learning An Introduction (Adaptive Computation and Machine Learning series).pdf
