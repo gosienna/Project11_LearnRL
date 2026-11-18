@@ -168,10 +168,21 @@ PIXI_NO_TELEMETRY=1 ~/.pixi/bin/pixi run pdftoppm -f <page> -l <page> -r 80 -png
 For a level extract, point at that file instead. The tracked extracts are
 `reference/level-1/sutton-barto-chapter-2.pdf`,
 `reference/level-2/sutton-barto-chapter-3.pdf`,
-`reference/level-2/sutton-barto-chapter-6.pdf`, and
-`reference/level-3/sutton-barto-chapter-13.pdf`. Their page offsets are in the
+`reference/level-2/sutton-barto-chapter-6.pdf`,
+`reference/level-3/sutton-barto-chapter-9.pdf`,
+`reference/level-3/sutton-barto-chapter-13.pdf`,
+`reference/level-3/sutton-barto-section-16-5.pdf`,
+`reference/level-4/sutton-barto-chapter-12.pdf`, and
+`reference/level-5/sutton-barto-chapter-11.pdf`. Their page offsets are in the
 `reference/README.md` page map. Bites link the extract, not the full book,
-because the full book is gitignored. Then Read the PNG
+because the full book is gitignored.
+
+The second book, `reference/Deep Reinforcement Learning in Action (Alexander
+Zai, Brandon Brown) (z-library.sk, 1lib.sk, z-lib.sk).pdf`, is also
+gitignored and has **no** tracked extracts; do not create any. Bites link the
+full local PDF at its PDF page (printed page + 22), using the page map in
+`reference/README.md`. Its code is PyTorch: quote its ideas, never its code,
+because a code excerpt would be a paste-ready solution. Then Read the PNG
 `pdftoppm` wrote (e.g. `scratchpad/p-01.png` — zero-padded page number).
 
 ### Framework vs book

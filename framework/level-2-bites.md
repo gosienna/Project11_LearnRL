@@ -19,6 +19,9 @@ infrastructure except the grid renderer and step mode.
 2. Lilian Weng, *A (Long) Peek into Reinforcement Learning*: Bellman, TD,
    SARSA, Q-learning.
 3. David Silver, Lectures 4 and 5. Grid spec: Gymnasium Cliff Walking.
+4. Optional: *Deep RL in Action* §§2.6–2.7 and §3.1 (see the page map below).
+   From §3.2 on, the book fits Q with a neural network on its own Gridworld.
+   This level keeps a table, so read §3.2 for the update rule only.
 
 Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §3. The demo follows
 [rl-web-framework.md](rl-web-framework.md) Level 2.
@@ -37,6 +40,15 @@ Ch. 3 extract page = book PDF page − 68. Ch. 6 extract page = book PDF page �
 | §6.5 Q-learning: Off-policy TD Control | [ch. 6 p. 13](../reference/level-2/sutton-barto-chapter-6.pdf#page=13) |
 | Example 6.6 Cliff Walking | [ch. 6 p. 14](../reference/level-2/sutton-barto-chapter-6.pdf#page=14) |
 | §6.6 Expected Sarsa | [ch. 6 p. 15](../reference/level-2/sutton-barto-chapter-6.pdf#page=15) |
+
+*Deep RL in Action* (local full book, gitignored; PDF page = printed page + 22):
+
+| Section | Link |
+|---------|------|
+| §2.6 The Markov property | [p. 69](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=69) |
+| §2.7 Value and policy functions | [p. 71](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=71) |
+| §3.1 The Q function | [p. 77](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=77) |
+| §3.2 Navigating with Q-learning (update rule only) | [p. 78](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=78) |
 
 ## Prerequisite
 

@@ -17,12 +17,18 @@ and the `nn/` façade over TF.js. Everything else is reused from L1–L2.
 1. Sutton & Barto ch. 13 §§13.1–13.4, using the local extract in `reference/level-3/`.
 2. OpenAI Spinning Up, Part 3, through the baseline section.
 3. Karpathy, *Pong from Pixels*, for intuition.
+4. Sutton & Barto ch. 9 §9.3 and §9.7 (local extract): semi-gradient updates and
+   neural networks. These explain why a network replaces the table.
+5. *Deep RL in Action* ch. 4 §§4.1–4.4: a policy network and REINFORCE on
+   CartPole, in PyTorch. It is the closest worked example to this level.
 
 Env spec: Gymnasium CartPole-v1. Tests follow
 [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §4. The demo follows
 [rl-web-framework.md](rl-web-framework.md) Level 3.
 
-### Page map (ch. 13 extract page = book PDF page − 342)
+### Page map
+
+Extract page = book PDF page − 342 (ch. 13), − 218 (ch. 9), − 457 (§16.5).
 
 | Section | Link |
 |---------|------|
@@ -30,7 +36,20 @@ Env spec: Gymnasium CartPole-v1. Tests follow
 | §13.2 The Policy Gradient Theorem | [p. 4](../reference/level-3/sutton-barto-chapter-13.pdf#page=4) |
 | §13.3 REINFORCE: Monte Carlo Policy Gradient | [p. 6](../reference/level-3/sutton-barto-chapter-13.pdf#page=6) |
 | §13.4 REINFORCE with Baseline | [p. 9](../reference/level-3/sutton-barto-chapter-13.pdf#page=9) |
+| §9.3 Stochastic-gradient and Semi-gradient Methods | [ch. 9 p. 4](../reference/level-3/sutton-barto-chapter-9.pdf#page=4) |
+| §9.7 Nonlinear Function Approximation: Artificial Neural Networks | [ch. 9 p. 27](../reference/level-3/sutton-barto-chapter-9.pdf#page=27) |
+| §16.5 Human-level Video Game Play (DQN; optional variant) | [§16.5 p. 1](../reference/level-3/sutton-barto-section-16-5.pdf#page=1) |
 | CartPole dynamics (not in the book) | https://gymnasium.farama.org/environments/classic_control/cart_pole/ |
+
+*Deep RL in Action* (local full book, gitignored; PDF page = printed page + 22):
+
+| Section | Link |
+|---------|------|
+| §4.1 Policy function using neural networks | [p. 113](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=113) |
+| §4.2 Reinforcing good actions: the policy gradient | [p. 117](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=117) |
+| §4.4 The REINFORCE algorithm (CartPole, no baseline) | [p. 125](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=125) |
+| App. A.3 Deep learning | [p. 365](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=365) |
+| §3.2–3.4 DQN, replay, target network (optional DQN variant) | [p. 78](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=78) |
 
 ## Prerequisites
 
@@ -91,6 +110,11 @@ the fixture and Gym.
 Reference: §13.3 [p. 6](../reference/level-3/sutton-barto-chapter-13.pdf#page=6)
 (return `G_t` in the REINFORCE update) and §13.1
 [p. 2](../reference/level-3/sutton-barto-chapter-13.pdf#page=2) (softmax policy).
+For the `nn/` bites (L3.14a–L3.19G): §9.7
+[ch. 9 p. 27](../reference/level-3/sutton-barto-chapter-9.pdf#page=27) (neural
+networks as function approximators) and *Deep RL in Action* App. A.3
+[p. 365](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=365)
+(deep learning in brief). The book builds networks in PyTorch; `nn/` wraps TF.js.
 
 - [ ] **L3.11R** `test/agent/lib/returns.test.js` — `[1,1,1]`, `γ = 0.9` →
       `[2.71, 1.9, 1]` *[TDD 3.10]*
@@ -121,6 +145,10 @@ Reference: §13.3 [p. 6](../reference/level-3/sutton-barto-chapter-13.pdf#page=6
 (the REINFORCE box), §13.4 [p. 9](../reference/level-3/sutton-barto-chapter-13.pdf#page=9)
 (baseline). **Differs from the book:** the book's baseline is a learned
 `v̂(s,w)`; this level uses the episode's mean return. A learned value is Level 4.
+*Deep RL in Action* §4.4
+[p. 125](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=125)
+is REINFORCE on this same CartPole, with no baseline. It is the baseline-OFF arm
+of the variance panel.
 Test file `test/agent/reinforce.test.js`; code `agent/reinforce.js`.
 
 - [ ] **L3.20R** `act(obs)` returns `{ action, logProb }` with action ∈ {0,1}

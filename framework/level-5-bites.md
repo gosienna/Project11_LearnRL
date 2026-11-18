@@ -21,16 +21,50 @@ env, page, and worker branch, not in `core/` (framework §2.7).
 2. He et al. 2016, *Opponent Modeling in Deep RL*: architecture and the
    non-stationary-opponent experiments.
 3. Papoudakis et al. 2019: problem statement and opponent-modelling section.
+4. *Deep RL in Action* §§3.3–3.4 (experience replay, target network) and §10.5
+   (double Q-learning): the DQN versions of the replay buffer, target critics,
+   and twin-Q `min`. §9.1 and §9.5 cover what changes when another agent is in
+   the environment.
+5. Sutton & Barto §11.3, *The Deadly Triad* (local extract): function
+   approximation + bootstrapping + off-policy data. Replay buffers and target
+   networks exist to tame this combination.
 
 The book's §6.7 *Maximization Bias and Double Learning*
 ([ch. 6 p. 16](../reference/level-2/sutton-barto-chapter-6.pdf#page=16)) is the tabular root of
-the twin-Q `min`. Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §6.
+the twin-Q `min`.
+
+### Page map
+
+Sutton & Barto ch. 11 extract page = book PDF page − 278.
+
+| Section | Link |
+|---------|------|
+| §6.7 Maximization Bias and Double Learning | [ch. 6 p. 16](../reference/level-2/sutton-barto-chapter-6.pdf#page=16) |
+| §11.3 The Deadly Triad | [ch. 11 p. 8](../reference/level-5/sutton-barto-chapter-11.pdf#page=8) |
+| §16.5 Human-level Video Game Play (DQN replay, target net) | [§16.5 p. 1](../reference/level-3/sutton-barto-section-16-5.pdf#page=1) |
+
+*Deep RL in Action* (local full book, gitignored; PDF page = printed page + 22):
+
+| Section | Link |
+|---------|------|
+| §3.3 Experience replay | [p. 97](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=97) |
+| §3.4 Improving stability with a target network | [p. 102](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=102) |
+| §9.1 From one to many agents | [p. 266](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=266) |
+| §9.5 Mixed cooperative-competitive games | [p. 293](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=293) |
+| §10.5 Double Q-learning | [p. 339](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=339) |
+
+Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §6.
 The demo follows [rl-web-framework.md](rl-web-framework.md) Level 5.
 
 ## Phase A — replay buffer
 
 Reference: Spinning Up SAC ("replay buffer" in the pseudocode). Test file
 `test/core/buffer.test.js`; code `core/buffer.js` (extends L4's ring).
+*Deep RL in Action* §3.3
+[p. 97](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=97)
+explains why random minibatches from replay prevent catastrophic forgetting.
+The book uses a Python `deque` with `random.sample`; here sampling goes through
+the project RNG so the L5.3 fixture is exact.
 
 - [ ] **L5.1** Capacity: push 5 into cap 3 → `size === 3`, last 3 *[TDD 5.1]*.
       Observe: green from L4.0c.
@@ -47,6 +81,16 @@ Reference: Spinning Up SAC ("replay buffer" in the pseudocode). Test file
 
 Reference: Spinning Up SAC, the "Learning Q" and "Learning the Policy"
 sections. Tests `test/agent/lib/targets.test.js`, `test/nn/heads.test.js`.
+Twin-Q `min` (L5.8): *Deep RL in Action* §10.5
+[p. 339](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=339)
+and Sutton & Barto §6.7 (overestimation from a single `max`). Polyak (L5.10–L5.11):
+*Deep RL in Action* §3.4
+[p. 102](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=102)
+and Sutton & Barto §11.3
+[ch. 11 p. 8](../reference/level-5/sutton-barto-chapter-11.pdf#page=8).
+**Differs from the book:** *Deep RL in Action* copies the online network into
+the target every `sync_freq` steps (a hard copy, which is `τ = 1` on a schedule).
+SAC moves the target a fraction `τ` toward the online network on every step.
 
 - [ ] **L5.6R** SAC target: `r=1, γ=0.99, Q̄=[2.0,1.5], α=0.2, log π=−0.5` → `2.584` *[TDD 5.6]*
 - [ ] **L5.6G** `agent/lib/targets.js` — `sacTarget(r, done, q1, q2, logPi, γ, α)`
@@ -109,6 +153,9 @@ code `agent/sac.js`.
 
 Reference: He et al. 2016 (opponent network trained by supervised learning);
 Papoudakis et al. (why the opponent's policy is non-stationary).
+*Deep RL in Action* §9.1
+[p. 266](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=266)
+shows why another acting agent makes the environment non-stationary.
 
 - [ ] **L5.25R** `test/agent/opponent.test.js` — human action → one of 9 classes
       (8 directions + still)

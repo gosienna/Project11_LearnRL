@@ -48,3 +48,14 @@ Lecture 4 is the TD target `r + γV(s')`. Lecture 5 is the on-policy / off-polic
 toggle the demo puts on one button. The standard 4×12 cliff layout those
 lectures use is specified at
 https://gymnasium.farama.org/environments/toy_text/cliff_walking/
+
+## 4. Optional: Zai & Brown, *Deep Reinforcement Learning in Action*, §§2.6–3.2
+
+Local full book in `reference/` (gitignored; PDF page = printed page + 22):
+§2.6 [p. 69](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=69) · §2.7 [p. 71](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=71) ·
+§3.1 [p. 77](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=77) · §3.2 [p. 78](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=78).
+
+The Markov property, value and policy functions, and the Q function, in plain
+language. From §3.2 on, the book replaces the table with a neural network on its
+own Gridworld. Read §3.2 for the Q-learning update only: this level keeps a
+table, and the network version is the optional DQN variant in level 3.

@@ -15,6 +15,15 @@ The plan for the five-level RL site and the bite checklists that track progress.
 The framework docs are the source of truth for *what* the learner implements.
 The reading for each level is in `reference/level-N/README.md`.
 
+Two books back the bites, and each level file's page map links both:
+
+- **Sutton & Barto**, *Reinforcement Learning: An Introduction*: the concept
+  source. Bites link the tracked per-chapter extracts in `reference/level-N/`.
+- **Zai & Brown**, *Deep Reinforcement Learning in Action*: the code-first
+  companion (PyTorch). Bites link the local, gitignored full PDF at its PDF
+  page. It has no tracked extracts, so the links work only on a machine that
+  has the book.
+
 ## Bite rules (all levels)
 
 Every checklist line is one bite.

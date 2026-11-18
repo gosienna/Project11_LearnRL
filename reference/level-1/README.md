@@ -4,7 +4,10 @@ Exploration versus exploitation. No state, no bootstrapping. The update on scree
 is the constant-step-size action value, with ε-greedy and UCB as the two policies,
 plus a non-stationary arm-mean mode.
 
-## 0. Seeded draws (before the bandit)
+## 0. Tooling, then seeded draws
+
+[tooling.md](tooling.md) — root `package.json`, the four npm scripts, and why
+Vitest points at `student/`. Read this for L1.0a.
 
 [xorshift32.md](xorshift32.md) — how `RNG.uniform` turns one integer seed into
 a repeatable fraction in `[0, 1)`. Read this while implementing `student/core/rng.js`.
@@ -37,3 +40,12 @@ Course index: http://www.davidsilver.uk/teaching/
 The first half is the bandit problem this level is built on. Watch through
 ε-greedy and upper confidence bounds. The later Gittins and Bayesian material
 is beyond the demo.
+
+## 4. Optional: Zai & Brown, *Deep Reinforcement Learning in Action*, §2.2
+
+Local full book in `reference/` (gitignored; PDF page = printed page + 22):
+§2.2 Solving the multi-arm bandit [p. 50](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=50).
+
+The same 10-armed problem in Python, with ε-greedy and softmax selection. It has
+no UCB; the demo's UCB comes from Sutton & Barto §2.7. Skip §§2.3–2.5 (ad
+placement, PyTorch, contextual bandits).

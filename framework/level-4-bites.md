@@ -19,13 +19,29 @@ level; expect more bites per milestone.
    and the continuous-action section. **Read before L4.30.**
 2. Schulman et al. 2017, *PPO*: the clip objective and the algorithm box.
 3. OpenAI Spinning Up, PPO; Schulman et al. 2015 for GAE if `λ` is unclear.
+4. *Deep RL in Action* ch. 5: actor-critic, distributed training, advantage
+   actor-critic, and N-step returns, on CartPole in PyTorch. It is the bridge
+   from Level 3's REINFORCE to an actor-critic. The book has no clip and no GAE.
+5. Sutton & Barto §12.1, *The λ-return* (local extract): the `λ`-weighted mix
+   of n-step returns that GAE applies to advantages.
 
-Book sections that bridge from Level 3 (ch. 13 extract in `reference/level-3/`):
+Book sections that bridge from Level 3 (Sutton & Barto; ch. 13 extract in
+`reference/level-3/`, ch. 12 extract page = book PDF page − 308):
 
 | Section | Link |
 |---------|------|
 | §13.5 Actor–Critic Methods | [p. 11](../reference/level-3/sutton-barto-chapter-13.pdf#page=11) |
 | §13.7 Policy Parameterization for Continuous Actions | [p. 15](../reference/level-3/sutton-barto-chapter-13.pdf#page=15) |
+| §12.1 The λ-return | [ch. 12 p. 2](../reference/level-4/sutton-barto-chapter-12.pdf#page=2) |
+
+*Deep RL in Action* (local full book, gitignored; PDF page = printed page + 22):
+
+| Section | Link |
+|---------|------|
+| §5.1 Combining the value and policy function | [p. 135](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=135) |
+| §5.2 Distributed training (parallel envs) | [p. 140](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=140) |
+| §5.3 Advantage actor-critic | [p. 145](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=145) |
+| §5.4 N-step actor-critic | [p. 154](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=154) |
 
 Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §5. The demo follows
 [rl-web-framework.md](rl-web-framework.md) Level 4.
@@ -48,6 +64,14 @@ Reference: §13.7 [p. 15](../reference/level-3/sutton-barto-chapter-13.pdf#page=
 ## Phase A — GAE and losses (pure functions, before any agent)
 
 Reference: Spinning Up PPO (advantage section), PPO paper eq. 7 (clip).
+For the GAE bites (L4.1–L4.4): Sutton & Barto §12.1
+[ch. 12 p. 2](../reference/level-4/sutton-barto-chapter-12.pdf#page=2) (λ-return:
+`λ = 0` is one-step TD, `λ = 1` is Monte Carlo, the same two ends L4.2–L4.3 test)
+and *Deep RL in Action* §5.4
+[p. 154](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=154)
+(N-step bootstrapping). **Differs from the book:** Sutton & Barto define `λ` on
+returns for value learning, and *Deep RL in Action* uses a fixed N. GAE applies
+the `λ` weighting to TD errors `δ`, the advantages.
 Tests in `test/agent/lib/`; code in `agent/lib/gae.js` and `agent/lib/losses.js`.
 
 - [ ] **L4.1R** GAE 3-step fixture → `[3.08788445, 2.120026, 1.092]` *[TDD 4.1]*
@@ -109,6 +133,11 @@ Test file `test/env/racer.test.js`; code `env/racer.js` (split into
 ## Phase C — vectorization
 
 Reference: framework §2.3 (`env/vec.js`). Test file `test/env/vec.test.js`.
+*Deep RL in Action* §5.2
+[p. 140](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=140)
+explains why parallel envs decorrelate experience. **Differs from the book:**
+the book runs one Python process per worker. `VecEnv` steps N envs in lock-step
+inside one worker, so a fixed seed still gives exactly the same rollout.
 
 - [ ] **L4.25R** `VecEnv(8)` steps all 8 → obs shape `[8, 12]` *[TDD 4.22]*
 - [ ] **L4.25G** `env/vec.js` — `clone()` N envs, each with its own seeded RNG
@@ -120,6 +149,10 @@ Reference: framework §2.3 (`env/vec.js`). Test file `test/env/vec.test.js`.
 ## Phase D — PPO agent
 
 Reference: *37 details* (read now), Spinning Up PPO pseudocode, PPO algorithm box.
+For the actor/critic split: *Deep RL in Action* §5.3
+[p. 145](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=145).
+The book shares one network body between the two heads; this level uses
+separate actor and critic networks (L4.29G, per *37 details*).
 Test file `test/agent/ppo.test.js`; code `agent/ppo.js` unless named.
 
 - [ ] **L4.28R** `test/nn/mlp.test.js` — orthogonal init: hidden `W·Wᵀ ≈ 2·I`

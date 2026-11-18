@@ -43,3 +43,23 @@ Sutton & Barto §13.5 Actor–Critic Methods
 Parameterization for Continuous Actions
 ([p. 15](../level-3/sutton-barto-chapter-13.pdf#page=15)). Read these before
 the papers if the critic or the Gaussian head is new.
+
+## 4. Zai & Brown, *Deep Reinforcement Learning in Action*, Chapter 5
+
+Local full book in `reference/` (gitignored; PDF page = printed page + 22):
+§5.1 [p. 135](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=135) · §5.2 Distributed training [p. 140](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=140) ·
+§5.3 Advantage actor-critic [p. 145](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=145) · §5.4 N-step actor-critic
+[p. 154](../Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=154).
+
+The step from level 3's REINFORCE to an actor-critic, still on CartPole. Its
+network shares a body between two heads (Figure 5.11); the framework keeps actor
+and critic separate, per *37 details*. N-step returns are the fixed-horizon
+version of GAE's `λ`. The book does not cover PPO (§11.2.2) or GAE.
+
+## 5. Sutton & Barto, §12.1 The λ-return
+
+Local extract: [sutton-barto-chapter-12.pdf](sutton-barto-chapter-12.pdf#page=2),
+book PDF pages 309–342. Extract page = book PDF page − 308.
+
+The `λ`-weighted average of n-step returns, with `λ = 0` giving one-step TD
+and `λ = 1` giving Monte Carlo. GAE applies the same weighting to TD errors.

@@ -419,7 +419,10 @@ Learning: hidden width, `lr`, `γ`, baseline on/off, entropy coefficient `β`.
 60 s of wall clock in-browser. Baseline-ON shows visibly lower gradient variance.
 
 **Optional:** a DQN variant on the same env, to expose the replay buffer and
-target-network lag visually. This also previews L5's machinery.
+target-network lag visually. This also previews L5's machinery. Reading:
+*Deep RL in Action* §§3.2–3.4 (DQN, experience replay, target network) and
+Sutton & Barto §16.5 (the Atari DQN case study). Both are in the Level 3 page
+map. This variant has no bite checklist yet.
 
 ---
 
@@ -682,7 +685,14 @@ humanoid or dexterous manipulation later.
 
 ### Foundations
 - Sutton & Barto, *Reinforcement Learning: An Introduction* (2nd ed.) — http://incompleteideas.net/book/RLbook2020.pdf
-  (Ch. 2 → L1, Ch. 6 → L2, Ch. 8 → Dyna, Ch. 13 → L3)
+  (Ch. 2 → L1, Ch. 3 + 6 → L2, Ch. 8 → Dyna, Ch. 9 + 13 → L3, §16.5 → optional
+  DQN, §12.1 → L4 GAE, §11.3 + §6.7 → L5)
+- Zai & Brown, *Deep Reinforcement Learning in Action* (Manning, 2020) — local
+  PDF in `reference/`, gitignored, with no tracked extracts. It is the code-first
+  companion: §2.2 → L1, §§2.6–3.1 → L2, ch. 4 (REINFORCE on CartPole) and
+  §§3.2–3.4 (DQN) → L3, ch. 5 (actor-critic, N-step, parallel workers) → L4,
+  §§3.3–3.4, §10.5, ch. 9 → L5. It does not cover UCB, GAE, PPO, or SAC.
+  Its code is PyTorch, so translate the ideas into JS; do not port the code.
 - OpenAI Spinning Up — https://spinningup.openai.com/
 
 ### Level 3

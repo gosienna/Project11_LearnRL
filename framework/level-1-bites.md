@@ -18,6 +18,9 @@ reuse, so it is longer than its algorithm.
 2. Lilian Weng, *The Multi-Armed Bandit Problem and Its Solutions*
    (ε-greedy, UCB, regret). Thompson sampling is extra.
 3. David Silver, Lecture 9, through ε-greedy and upper confidence bounds.
+4. Optional, code-first: Zai & Brown, *Deep Reinforcement Learning in Action*,
+   §2.2 (see the page map below). It uses ε-greedy and softmax selection in
+   Python and has no UCB. The framework's UCB comes from Sutton & Barto §2.7.
 
 Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §1–§2. The demo follows
 [rl-web-framework.md](rl-web-framework.md) Level 1 and §2.6, §2.10.
@@ -33,6 +36,12 @@ Tests follow [rl-web-tdd-plan.md](rl-web-tdd-plan.md) §1–§2. The demo follow
 | §2.5 Tracking a Nonstationary Problem | [p. 10](../reference/level-1/sutton-barto-chapter-2.pdf#page=10) |
 | §2.7 Upper-Confidence-Bound Action Selection | [p. 13](../reference/level-1/sutton-barto-chapter-2.pdf#page=13) |
 | Seeded RNG (not in the book) | [reference/level-1/xorshift32.md](../reference/level-1/xorshift32.md) |
+
+*Deep RL in Action* (local full book, gitignored; PDF page = printed page + 22):
+
+| Section | Link |
+|---------|------|
+| §2.2 Solving the multi-arm bandit (ε-greedy, softmax) | [p. 50](../reference/Deep%20Reinforcement%20Learning%20in%20Action%20%28Alexander%20Zai%2C%20Brandon%20Brown%29%20%28z-library.sk%2C%201lib.sk%2C%20z-lib.sk%29.pdf#page=50) |
 
 ## Setup and seeded RNG
 
